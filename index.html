@@ -20,6 +20,22 @@
       <p class="year-display" id="schoolYearDisplay"></p>
     </header>
 
+    <!-- Landing Screen -->
+    <div id="landingScreen" style="display: none;">
+      <div class="landing-card">
+        <h2 id="landingSchoolName" class="landing-school-name"></h2>
+        <p class="landing-info" id="landingInfo"></p>
+        <div class="landing-actions">
+          <button type="button" id="continueBtn" class="btn-primary btn-large">Continue</button>
+          <button type="button" id="startNewBtn" class="btn-secondary">Start New Roster</button>
+          <div class="landing-divider"><span>or</span></div>
+          <label class="btn-secondary btn-import" for="importPdfInput">Import from PDF</label>
+          <input type="file" id="importPdfInput" accept=".pdf" style="display: none;">
+        </div>
+        <p class="field-error" id="importError"></p>
+      </div>
+    </div>
+
     <nav class="wizard-progress" aria-label="Form progress" id="wizardProgress" style="display: none;">
       <ol class="progress-steps">
         <li class="progress-step active" data-step="1">
@@ -262,22 +278,6 @@
     </footer>
 
     <div class="app-version" id="appVersion"></div>
-  </div>
-
-  <!-- Landing Screen -->
-  <div id="landingScreen" style="display: none;">
-    <div class="landing-card">
-      <h2 id="landingSchoolName" class="landing-school-name"></h2>
-      <p class="landing-info" id="landingInfo"></p>
-      <div class="landing-actions">
-        <button type="button" id="continueBtn" class="btn-primary btn-large">Continue</button>
-        <button type="button" id="startNewBtn" class="btn-secondary">Start New Roster</button>
-        <div class="landing-divider"><span>or</span></div>
-        <label class="btn-secondary btn-import" for="importPdfInput">Import from PDF</label>
-        <input type="file" id="importPdfInput" accept=".pdf" style="display: none;">
-      </div>
-      <p class="field-error" id="importError"></p>
-    </div>
   </div>
 
   <!-- Import from recruitment modal -->
