@@ -241,6 +241,7 @@ function _restoreAllFields() {
 // ========================================
 
 document.addEventListener('DOMContentLoaded', () => {
+  initSchoolYearDropdown();
   initNavigationButtons();
   initSchoolNameListener();
   initTeacherButtons();
@@ -256,6 +257,31 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('beforeunload', () => { _syncCurrentStep(); _saveToStorage(); });
 });
 
+function initSchoolYearDropdown() {
+  const select = document.getElementById('schoolYear');
+  const today = new Date();
+  const month = today.getMonth();
+  const year = today.getFullYear();
+
+  const currentSchoolYear = month >= 8 ? `${year}-${year + 1}` : `${year - 1}-${year}`;
+
+  const options = [];
+  for (let y = 2025; y <= year + 3; y++) {
+    options.push(`${y}-${y + 1}`);
+  }
+
+  select.innerHTML = options.map(opt =>
+    `<option value="${opt}" ${opt === currentSchoolYear ? 'selected' : ''}>${opt}</option>`
+  ).join('');
+
+  if (!report.schoolYear) report.schoolYear = currentSchoolYear;
+
+  select.addEventListener('change', () => {
+    report.schoolYear = select.value;
+    updateHeaderDisplay();
+  });
+}
+
 function updateHeaderDisplay() {
   document.getElementById('schoolNameHeader').textContent = report.schoolName || '';
   document.getElementById('schoolYearDisplay').textContent =
@@ -267,20 +293,43 @@ function initSchoolNameListener() {
     report.schoolName = e.target.value.trim();
     updateHeaderDisplay();
   });
-  document.getElementById('schoolYear').addEventListener('input', (e) => {
-    report.schoolYear = e.target.value.trim();
-    updateHeaderDisplay();
-  });
 }
 
 // ========================================
 // Teacher Table / Form
 // ========================================
 
+function _updateTenureDuration() {
+  const start = document.getElementById('tenureStart').value;
+  const end = document.getElementById('tenureEnd').value;
+  const el = document.getElementById('tenureDuration');
+  if (!start || !end) { el.textContent = ''; return; }
+
+  const s = new Date(start);
+  const e = new Date(end);
+  if (e <= s) { el.textContent = 'End date must be after start date.'; el.style.color = 'var(--color-error)'; return; }
+
+  const diffMs = e - s;
+  const totalDays = Math.round(diffMs / 86400000);
+  const years = Math.floor(totalDays / 365);
+  const months = Math.floor((totalDays % 365) / 30);
+  const days = totalDays % 30;
+
+  const parts = [];
+  if (years) parts.push(`${years} year${years !== 1 ? 's' : ''}`);
+  if (months) parts.push(`${months} month${months !== 1 ? 's' : ''}`);
+  if (days) parts.push(`${days} day${days !== 1 ? 's' : ''}`);
+
+  el.textContent = `Duration: ${parts.join(', ')}`;
+  el.style.color = '';
+}
+
 function initTeacherButtons() {
   document.getElementById('addTeacherBtn').addEventListener('click', () => openTeacherForm(-1));
   document.getElementById('saveTeacherBtn').addEventListener('click', saveTeacher);
   document.getElementById('cancelTeacherBtn').addEventListener('click', closeTeacherForm);
+  document.getElementById('tenureStart').addEventListener('change', _updateTenureDuration);
+  document.getElementById('tenureEnd').addEventListener('change', _updateTenureDuration);
   document.getElementById('backToTeacherListBtn').addEventListener('click', closeTeacherForm);
   document.getElementById('importTeachersBtn').addEventListener('click', showImportModal);
   document.getElementById('confirmImportBtn').addEventListener('click', confirmImport);
@@ -807,6 +856,23 @@ function _validateTeacherList() {
     showError('teacherTableError', 'You must add at least one teacher.');
     return false;
   }
+
+  const requiredFields = ['lastName', 'firstName', 'email', 'gender', 'programYear',
+    'birthDate', 'birthCity', 'birthCountry', 'nationality', 'level', 'state',
+    'yearlySalary', 'tenureStart', 'tenureEnd'];
+
+  const incomplete = [];
+  report.teachers.forEach((t, i) => {
+    const missing = requiredFields.filter(f => !t[f]);
+    if (missing.length > 0) incomplete.push(i + 1);
+  });
+
+  if (incomplete.length > 0) {
+    showError('teacherTableError',
+      `Teacher${incomplete.length > 1 ? 's' : ''} #${incomplete.join(', #')} ha${incomplete.length > 1 ? 've' : 's'} missing required fields. Click Edit to complete.`);
+    return false;
+  }
+
   clearError('teacherTableError');
   return true;
 }
