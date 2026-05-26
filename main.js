@@ -695,6 +695,24 @@ function _syncCurrentStep() {
     report.contactLastName = document.getElementById('contactLastName').value.trim();
     report.contactEmail = document.getElementById('contactEmail').value.trim();
   }
+  if (currentStep === 2 && document.getElementById('teacherFormView').style.display !== 'none') {
+    const t = _readTeacherFromForm();
+    if (editingTeacherIndex >= 0) {
+      report.teachers[editingTeacherIndex] = t;
+    } else if (t.firstName || t.lastName || t.email) {
+      report.teachers.push(t);
+      editingTeacherIndex = report.teachers.length - 1;
+    }
+  }
+  if (currentStep === 3 && document.getElementById('relativeFormView').style.display !== 'none') {
+    const r = _readRelativeFromForm();
+    if (editingRelativeIndex >= 0) {
+      report.relatives[editingRelativeIndex] = r;
+    } else if (r.firstName || r.lastName) {
+      report.relatives.push(r);
+      editingRelativeIndex = report.relatives.length - 1;
+    }
+  }
   if (currentStep === 4) {
     _captureSignature();
     report.signature.signerName = document.getElementById('signerName').value.trim();
