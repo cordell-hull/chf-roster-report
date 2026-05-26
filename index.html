@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Roster - Cordell Hull Foundation</title>
+  <link rel="icon" type="image/jpeg" href="./assets/logo.jpeg">
+  <link rel="stylesheet" href="styles.css?v=1.0.0">
+</head>
+<body>
+  <div class="app-container">
+    <div class="org-header">
+      <img src="./assets/logo.jpeg" alt="Cordell Hull Foundation Logo" class="org-logo">
+      <span class="org-name">The Cordell Hull Foundation</span>
+    </div>
+
+    <header class="app-header">
+      <h1 id="schoolNameHeader" class="school-name-header"></h1>
+      <h2>Teacher Roster</h2>
+      <p class="year-display" id="schoolYearDisplay"></p>
+    </header>
+
+    <nav class="wizard-progress" aria-label="Form progress" id="wizardProgress" style="display: none;">
+      <ol class="progress-steps">
+        <li class="progress-step active" data-step="1">
+          <span class="step-number">1</span>
+          <span class="step-label">School</span>
+        </li>
+        <li class="progress-step" data-step="2">
+          <span class="step-number">2</span>
+          <span class="step-label">Teachers</span>
+        </li>
+        <li class="progress-step" data-step="3">
+          <span class="step-number">3</span>
+          <span class="step-label">Relatives</span>
+        </li>
+        <li class="progress-step" data-step="4">
+          <span class="step-number">4</span>
+          <span class="step-label">Sign</span>
+        </li>
+        <li class="progress-step" data-step="5">
+          <span class="step-number">5</span>
+          <span class="step-label">Review</span>
+        </li>
+      </ol>
+    </nav>
+
+    <main class="wizard-content" id="wizardContent" style="display: none;">
+
+      <!-- Step 1: School Info -->
+      <section class="wizard-step active" data-step="1">
+        <h2>School Information</h2>
+        <p class="step-description">This information appears at the top of the roster.</p>
+
+        <div class="form-group">
+          <label for="schoolName">Name of School <span class="required">*</span></label>
+          <input type="text" id="schoolName" placeholder="e.g., The French American School of Tampa Bay" required>
+          <span class="field-error" id="schoolNameError"></span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="schoolYear">School Year <span class="required">*</span></label>
+            <input type="text" id="schoolYear" placeholder="e.g., 2025-26" required>
+            <span class="field-error" id="schoolYearError"></span>
+          </div>
+        </div>
+
+        <h3 class="section-subheading">School Contact</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="contactFirstName">First Name <span class="required">*</span></label>
+            <input type="text" id="contactFirstName" placeholder="First name" required>
+            <span class="field-error" id="contactFirstNameError"></span>
+          </div>
+          <div class="form-group">
+            <label for="contactLastName">Last Name <span class="required">*</span></label>
+            <input type="text" id="contactLastName" placeholder="Last name" required>
+            <span class="field-error" id="contactLastNameError"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="contactEmail">Email Address <span class="required">*</span></label>
+          <input type="email" id="contactEmail" placeholder="contact@school.edu" required>
+          <span class="field-error" id="contactEmailError"></span>
+        </div>
+
+        <div class="info-box">
+          <p>Teacher data from your recruitment reports will appear automatically. You can also add teachers directly on the next step.</p>
+        </div>
+      </section>
+
+      <!-- Step 2: Teachers (table/form toggle) -->
+      <section class="wizard-step" data-step="2">
+        <div id="teacherTableView">
+          <h2>Teachers</h2>
+          <p class="step-description">Manage the teacher roster. Import teachers from your recruitment reports or add them manually.</p>
+          <div id="teacherTableContainer"></div>
+          <div class="add-teacher-actions">
+            <button type="button" id="importTeachersBtn" class="btn-secondary">Import from Recruitment Report</button>
+            <button type="button" id="addTeacherBtn" class="btn-primary">+ Add Teacher</button>
+          </div>
+          <span class="field-error" id="teacherTableError"></span>
+        </div>
+
+        <div id="teacherFormView" style="display: none;">
+          <div class="form-view-header">
+            <button type="button" id="backToTeacherListBtn" class="btn-secondary btn-sm">← Back to list</button>
+            <h2 id="teacherFormTitle">Add Teacher</h2>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group"><label for="teacherLastName">Last Name (as on passport) <span class="required">*</span></label><input type="text" id="teacherLastName" placeholder="Last name" required><span class="field-error" id="teacherLastNameError"></span></div>
+            <div class="form-group"><label for="teacherFirstName">First Name (as on passport) <span class="required">*</span></label><input type="text" id="teacherFirstName" placeholder="First name" required><span class="field-error" id="teacherFirstNameError"></span></div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group"><label for="teacherEmail">Email Address <span class="required">*</span></label><input type="email" id="teacherEmail" placeholder="teacher@example.com" required><span class="field-error" id="teacherEmailError"></span></div>
+            <div class="form-group"><label for="teacherGender">Gender <span class="required">*</span></label>
+              <select id="teacherGender" required><option value="">Select...</option><option value="M">Male</option><option value="F">Female</option></select>
+              <span class="field-error" id="teacherGenderError"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group"><label for="programYear">Program Year <span class="required">*</span></label>
+              <select id="programYear" required><option value="">Select...</option><option value="1">1st year</option><option value="2">2nd year</option><option value="3">3rd year</option><option value="4">4th year</option><option value="5">5th year</option></select>
+              <span class="field-error" id="programYearError"></span>
+            </div>
+            <div class="form-group"><label for="birthDate">Birth Date <span class="required">*</span></label><input type="date" id="birthDate" required><span class="field-error" id="birthDateError"></span></div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group"><label for="birthCity">City of Birth <span class="required">*</span></label><input type="text" id="birthCity" placeholder="e.g., Colmar" required><span class="field-error" id="birthCityError"></span></div>
+            <div class="form-group"><label for="birthCountry">Country of Birth <span class="required">*</span></label><input type="text" id="birthCountry" list="countryList" placeholder="e.g., France" required><span class="field-error" id="birthCountryError"></span></div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group"><label for="countryOfResidence">Country of Residence</label><input type="text" id="countryOfResidence" list="countryList" placeholder="e.g., France"></div>
+            <div class="form-group"><label for="nationality">Nationality <span class="required">*</span></label><input type="text" id="nationality" placeholder="e.g., French" required><span class="field-error" id="nationalityError"></span></div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group"><label for="teacherLevel">Elementary or Secondary <span class="required">*</span></label>
+              <select id="teacherLevel" required><option value="">Select...</option><option value="Elementary">Elementary</option><option value="Secondary">Secondary</option></select>
+              <span class="field-error" id="teacherLevelError"></span>
+            </div>
+            <div class="form-group"><label for="teacherState">State <span class="required">*</span></label><input type="text" id="teacherState" list="stateList" placeholder="e.g., FL" required><span class="field-error" id="teacherStateError"></span></div>
+          </div>
+
+          <div class="form-group"><label for="yearlySalary">Yearly Salary <span class="required">*</span></label><input type="text" id="yearlySalary" placeholder="e.g., 45,000" required><span class="field-error" id="yearlySalaryError"></span></div>
+
+          <div class="form-row">
+            <div class="form-group"><label for="tenureStart">Tenure Start Date <span class="required">*</span></label><input type="date" id="tenureStart" required><span class="field-error" id="tenureStartError"></span></div>
+            <div class="form-group"><label for="tenureEnd">Tenure End Date <span class="required">*</span></label><input type="date" id="tenureEnd" required><span class="field-error" id="tenureEndError"></span></div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="saveTeacherBtn" class="btn-primary">Save Teacher</button>
+            <button type="button" id="cancelTeacherBtn" class="btn-secondary">Cancel</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 3: Relatives (table/form toggle) -->
+      <section class="wizard-step" data-step="3">
+        <div id="relativeTableView">
+          <h2>Relatives</h2>
+          <p class="step-description">Add accompanying relatives who need J-2 visa processing. If no relatives, click Next to continue.</p>
+          <p class="field-hint">If a spouse already has a visa, or children/spouses are not traveling, you can note that in the form.</p>
+          <div id="relativeTableContainer"></div>
+          <div class="add-teacher-actions">
+            <button type="button" id="addRelativeBtn" class="btn-primary">+ Add Relative</button>
+          </div>
+        </div>
+
+        <div id="relativeFormView" style="display: none;">
+          <div class="form-view-header">
+            <button type="button" id="backToRelativeListBtn" class="btn-secondary btn-sm">← Back to list</button>
+            <h2 id="relativeFormTitle">Add Relative</h2>
+          </div>
+
+          <div class="form-group">
+            <label for="relativeTeacher">Related to Teacher <span class="required">*</span></label>
+            <select id="relativeTeacher" required>
+              <option value="">Select teacher...</option>
+              <!-- Options populated by JS -->
+            </select>
+            <span class="field-error" id="relativeTeacherError"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="relativeRelationship">Relationship <span class="required">*</span></label>
+            <select id="relativeRelationship" required>
+              <option value="">Select...</option>
+              <option value="Spouse">Spouse</option>
+              <option value="Child">Child</option>
+            </select>
+            <span class="field-error" id="relativeRelationshipError"></span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group"><label for="relativeLastName">Last Name (as on passport) <span class="required">*</span></label><input type="text" id="relativeLastName" placeholder="Last name" required><span class="field-error" id="relativeLastNameError"></span></div>
+            <div class="form-group"><label for="relativeFirstName">First Name (as on passport) <span class="required">*</span></label><input type="text" id="relativeFirstName" placeholder="First name" required><span class="field-error" id="relativeFirstNameError"></span></div>
+          </div>
+
+          <div class="form-group"><label for="relativeMiddleName">Middle Name</label><input type="text" id="relativeMiddleName" placeholder="Middle name (if any)"></div>
+
+          <div class="form-row">
+            <div class="form-group"><label for="relativeBirthDate">Birth Date</label><input type="date" id="relativeBirthDate"></div>
+            <div class="form-group"><label for="relativeBirthCity">City of Birth</label><input type="text" id="relativeBirthCity" placeholder="e.g., Paris"></div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group"><label for="relativeBirthCountry">Country of Birth</label><input type="text" id="relativeBirthCountry" list="countryList" placeholder="e.g., France"></div>
+            <div class="form-group"><label for="relativeResidence">Country of Residence</label><input type="text" id="relativeResidence" list="countryList" placeholder="e.g., France"></div>
+          </div>
+
+          <div class="form-group"><label for="relativeNationality">Nationality</label><input type="text" id="relativeNationality" placeholder="e.g., French"></div>
+
+          <div class="form-actions">
+            <button type="button" id="saveRelativeBtn" class="btn-primary">Save Relative</button>
+            <button type="button" id="cancelRelativeBtn" class="btn-secondary">Cancel</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 4: Signature -->
+      <section class="wizard-step" data-step="4">
+        <h2>Signature</h2>
+        <p class="step-description">Sign and certify that all information in this roster is accurate.</p>
+        <p class="field-hint">Please fill out this form in its entirety. All information is needed to process the J-1 visa papers. The relatives section is for accompanying family members who need a separate DS-2019 form for J-2 visas.</p>
+
+        <div class="form-group">
+          <label>Digital Signature <span class="required">*</span></label>
+          <div class="signature-pad-container">
+            <canvas id="signatureCanvas" width="500" height="200"></canvas>
+            <button type="button" id="clearSignatureBtn" class="btn-secondary">Clear</button>
+          </div>
+          <span class="field-error" id="signatureError"></span>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label for="signerName">Full Name <span class="required">*</span></label><input type="text" id="signerName" placeholder="Full name" required><span class="field-error" id="signerNameError"></span></div>
+          <div class="form-group"><label for="signerTitle">Position Title <span class="required">*</span></label><input type="text" id="signerTitle" placeholder="e.g., Head of School" required><span class="field-error" id="signerTitleError"></span></div>
+        </div>
+      </section>
+
+      <!-- Step 5: Review -->
+      <section class="wizard-step" data-step="5">
+        <h2>Review Your Roster</h2>
+        <p class="step-description">Please review all information before generating the PDF.</p>
+        <div class="review-container" id="reviewContainer"></div>
+        <div class="generate-section">
+          <button type="button" id="generatePdfBtn" class="btn-primary btn-large">Generate PDF Report</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="wizard-navigation" id="wizardNavigation" style="display: none;">
+      <button type="button" id="prevBtn" class="btn-secondary" style="visibility: hidden;">← Back</button>
+      <button type="button" id="nextBtn" class="btn-primary">Next →</button>
+    </footer>
+
+    <div class="app-version" id="appVersion"></div>
+  </div>
+
+  <!-- Landing Screen -->
+  <div id="landingScreen" style="display: none;">
+    <div class="landing-card">
+      <h2 id="landingSchoolName" class="landing-school-name"></h2>
+      <p class="landing-info" id="landingInfo"></p>
+      <div class="landing-actions">
+        <button type="button" id="continueBtn" class="btn-primary btn-large">Continue</button>
+        <button type="button" id="startNewBtn" class="btn-secondary">Start New Roster</button>
+        <div class="landing-divider"><span>or</span></div>
+        <label class="btn-secondary btn-import" for="importPdfInput">Import from PDF</label>
+        <input type="file" id="importPdfInput" accept=".pdf" style="display: none;">
+      </div>
+      <p class="field-error" id="importError"></p>
+    </div>
+  </div>
+
+  <!-- Import from recruitment modal -->
+  <div class="progress-overlay" id="importModal" style="display: none;">
+    <div class="progress-modal import-modal">
+      <p class="draft-modal-title">Import from Recruitment Report</p>
+      <p class="field-hint">Select teachers to import. Teachers already in the roster are excluded.</p>
+      <div id="importTeacherList"></div>
+      <div class="draft-modal-actions">
+        <button type="button" class="btn-primary" id="confirmImportBtn">Import Selected</button>
+        <button type="button" class="btn-secondary" id="cancelImportBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <datalist id="countryList">
+    <option value="Argentina"><option value="Belgium"><option value="Brazil"><option value="Canada">
+    <option value="Chile"><option value="China"><option value="Colombia"><option value="Costa Rica">
+    <option value="Dominican Republic"><option value="Ecuador"><option value="France"><option value="Germany">
+    <option value="India"><option value="Italy"><option value="Japan"><option value="Mexico">
+    <option value="Peru"><option value="Philippines"><option value="South Korea"><option value="Spain">
+    <option value="Turkey"><option value="United Kingdom"><option value="United States"><option value="Venezuela">
+  </datalist>
+
+  <datalist id="stateList">
+    <option value="AL"><option value="AK"><option value="AZ"><option value="AR"><option value="CA">
+    <option value="CO"><option value="CT"><option value="DE"><option value="FL"><option value="GA">
+    <option value="HI"><option value="ID"><option value="IL"><option value="IN"><option value="IA">
+    <option value="KS"><option value="KY"><option value="LA"><option value="ME"><option value="MD">
+    <option value="MA"><option value="MI"><option value="MN"><option value="MS"><option value="MO">
+    <option value="MT"><option value="NE"><option value="NV"><option value="NH"><option value="NJ">
+    <option value="NM"><option value="NY"><option value="NC"><option value="ND"><option value="OH">
+    <option value="OK"><option value="OR"><option value="PA"><option value="RI"><option value="SC">
+    <option value="SD"><option value="TN"><option value="TX"><option value="UT"><option value="VT">
+    <option value="VA"><option value="WA"><option value="WV"><option value="WI"><option value="WY">
+    <option value="DC">
+  </datalist>
+
+  <div class="progress-overlay" id="generatingOverlay" style="display: none;">
+    <div class="progress-modal"><span class="spinner large"></span><p id="generatingStatus">Generating PDF...</p></div>
+  </div>
+
+  <script type="module" src="main.js?v=1.0.0"></script>
+</body>
+</html>
