@@ -114,8 +114,11 @@
           <div id="teacherTableContainer"></div>
           <div class="add-teacher-actions">
             <button type="button" id="importTeachersBtn" class="btn-secondary">Import from Recruitment Report</button>
+            <label class="btn-secondary btn-import" for="importTeachersPdfInput">Import from PDF</label>
+            <input type="file" id="importTeachersPdfInput" accept=".pdf" style="display: none;">
             <button type="button" id="addTeacherBtn" class="btn-primary">+ Add Teacher</button>
           </div>
+          <span class="field-error" id="importTeachersError"></span>
           <span class="field-error" id="teacherTableError"></span>
         </div>
 
