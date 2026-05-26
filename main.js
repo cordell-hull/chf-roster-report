@@ -171,6 +171,19 @@ function _startFresh() {
     }
   } catch {}
 
+  // Fallback: read school info directly from recruitment data if shared key is empty
+  if (!report.schoolName) {
+    try {
+      const recruit = JSON.parse(localStorage.getItem(RECRUITMENT_KEY));
+      if (recruit && recruit.schoolName) {
+        report.schoolName = recruit.schoolName;
+        report.contactFirstName = recruit.schoolContactFirstName || '';
+        report.contactLastName = recruit.schoolContactLastName || '';
+        report.contactEmail = recruit.schoolContactEmail || '';
+      }
+    } catch {}
+  }
+
   _restoreAllFields();
   _showWizard();
 }
