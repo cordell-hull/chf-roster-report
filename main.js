@@ -254,6 +254,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initLanding();
   setInterval(() => { _syncCurrentStep(); _saveToStorage(); }, 30000);
   window.addEventListener('beforeunload', () => { _syncCurrentStep(); _saveToStorage(); });
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') { _syncCurrentStep(); _saveToStorage(); }
+  });
 });
 
 function initSchoolYearDropdown() {
