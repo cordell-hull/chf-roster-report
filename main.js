@@ -252,10 +252,15 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('appVersion').textContent = `v${APP_VERSION}`;
 
   initLanding();
-  setInterval(() => { _syncCurrentStep(); _saveToStorage(); }, 30000);
-  window.addEventListener('beforeunload', () => { _syncCurrentStep(); _saveToStorage(); });
+  const _autoSave = () => {
+    if (document.getElementById('wizardContent').style.display === 'none') return;
+    _syncCurrentStep();
+    _saveToStorage();
+  };
+  setInterval(_autoSave, 30000);
+  window.addEventListener('beforeunload', _autoSave);
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') { _syncCurrentStep(); _saveToStorage(); }
+    if (document.visibilityState === 'hidden') _autoSave();
   });
 });
 
@@ -332,6 +337,11 @@ function initTeacherButtons() {
   document.getElementById('cancelTeacherBtn').addEventListener('click', closeTeacherForm);
   document.getElementById('tenureStart').addEventListener('change', _updateTenureDuration);
   document.getElementById('tenureEnd').addEventListener('change', _updateTenureDuration);
+  document.getElementById('yearlySalary').addEventListener('blur', (e) => {
+    const parsed = parseCurrency(e.target.value);
+    if (parsed === 0 && e.target.value.trim() === '') return;
+    e.target.value = formatCurrency(parsed);
+  });
   document.getElementById('importTeachersPdfInput').addEventListener('change', _handleTeacherPdfImport);
   document.getElementById('backToTeacherListBtn').addEventListener('click', closeTeacherForm);
   document.getElementById('importTeachersBtn').addEventListener('click', showImportModal);
@@ -1048,4 +1058,50 @@ function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
+}
+
+function parseCurrency(raw) {
+  if (typeof raw === 'number') return raw;
+  if (!raw || typeof raw !== 'string') return 0;
+  const cleaned = raw.replace(/[^0-9.,]/g, '');
+  if (!cleaned) return 0;
+
+  const lastComma = cleaned.lastIndexOf(',');
+  const lastDot = cleaned.lastIndexOf('.');
+  let normalized;
+
+  if (lastComma > lastDot) {
+    normalized = cleaned.replace(/\./g, '').replace(',', '.');
+  } else if (lastDot > lastComma) {
+    normalized = cleaned.replace(/,/g, '');
+  } else if (lastComma !== -1 && lastDot === -1) {
+    const afterComma = cleaned.slice(lastComma + 1);
+    if (afterComma.length === 3 && !cleaned.slice(0, lastComma).includes(',')) {
+      normalized = cleaned.replace(',', '');
+    } else {
+      normalized = cleaned.replace(/,/g, '.');
+    }
+  } else if (lastDot !== -1 && lastComma === -1) {
+    const afterDot = cleaned.slice(lastDot + 1);
+    if (afterDot.length === 3 && !cleaned.slice(0, lastDot).includes('.')) {
+      normalized = cleaned.replace('.', '');
+    } else {
+      normalized = cleaned;
+    }
+  } else {
+    normalized = cleaned;
+  }
+
+  const result = parseFloat(normalized);
+  return isNaN(result) ? 0 : result;
+}
+
+function formatCurrency(num) {
+  if (!num && num !== 0) return '';
+  if (num === 0) return '';
+  const hasDecimals = num % 1 !== 0;
+  return num.toLocaleString('en-US', {
+    minimumFractionDigits: hasDecimals ? 2 : 0,
+    maximumFractionDigits: 2
+  });
 }
