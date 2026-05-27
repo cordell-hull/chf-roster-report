@@ -14,7 +14,6 @@ function _emptyTeacher() {
   return {
     firstName: '', lastName: '', email: '',
     gender: '', programYear: '',
-    birthDate: '', birthCity: '', birthCountry: '',
     countryOfResidence: '', nationality: '',
     level: '', state: '', yearlySalary: '',
     tenureStart: '', tenureEnd: ''
@@ -359,16 +358,15 @@ function _updateNav(show) {
 
 const TEACHER_FIELDS = [
   'teacherLastName', 'teacherFirstName', 'teacherEmail', 'teacherGender',
-  'programYear', 'birthDate', 'birthCity', 'birthCountry',
-  'countryOfResidence', 'nationality', 'teacherLevel', 'teacherState',
-  'yearlySalary', 'tenureStart', 'tenureEnd'
+  'programYear', 'nationality', 'countryOfResidence', 'teacherLevel',
+  'teacherState', 'yearlySalary', 'tenureStart', 'tenureEnd'
 ];
 
 const TEACHER_STATE_MAP = {
   teacherLastName: 'lastName', teacherFirstName: 'firstName', teacherEmail: 'email',
-  teacherGender: 'gender', programYear: 'programYear', birthDate: 'birthDate',
-  birthCity: 'birthCity', birthCountry: 'birthCountry', countryOfResidence: 'countryOfResidence',
-  nationality: 'nationality', teacherLevel: 'level', teacherState: 'state',
+  teacherGender: 'gender', programYear: 'programYear',
+  nationality: 'nationality', countryOfResidence: 'countryOfResidence',
+  teacherLevel: 'level', teacherState: 'state',
   yearlySalary: 'yearlySalary', tenureStart: 'tenureStart', tenureEnd: 'tenureEnd'
 };
 
@@ -513,7 +511,7 @@ function confirmImport() {
     t.firstName = src.firstName || '';
     t.lastName = src.lastName || '';
     t.email = src.email || '';
-    t.birthCountry = src.interviewCountry || '';
+    t.nationality = src.interviewCountry || '';
     t.countryOfResidence = src.interviewCountry || '';
     report.teachers.push(t);
   }
@@ -900,8 +898,7 @@ function _validateTeacherList() {
   }
 
   const requiredFields = ['lastName', 'firstName', 'email', 'gender', 'programYear',
-    'birthDate', 'birthCity', 'birthCountry', 'nationality', 'level', 'state',
-    'yearlySalary', 'tenureStart', 'tenureEnd'];
+    'nationality', 'level', 'state', 'yearlySalary', 'tenureStart', 'tenureEnd'];
 
   const incomplete = [];
   report.teachers.forEach((t, i) => {
@@ -922,8 +919,7 @@ function _validateTeacherList() {
 function _validateTeacherForm(t) {
   let v = true;
   const req = { teacherLastName: 'lastName', teacherFirstName: 'firstName', teacherEmail: 'email',
-    teacherGender: 'gender', programYear: 'programYear', birthDate: 'birthDate',
-    birthCity: 'birthCity', birthCountry: 'birthCountry', nationality: 'nationality',
+    teacherGender: 'gender', programYear: 'programYear', nationality: 'nationality',
     teacherLevel: 'level', teacherState: 'state', yearlySalary: 'yearlySalary',
     tenureStart: 'tenureStart', tenureEnd: 'tenureEnd' };
 
@@ -965,8 +961,6 @@ function renderReview() {
       <td>${escapeHtml(t.email)}</td>
       <td>${escapeHtml(t.gender)}</td>
       <td>${escapeHtml(t.programYear)}</td>
-      <td>${escapeHtml(t.birthDate)}</td>
-      <td>${escapeHtml(t.birthCountry)}</td>
       <td>${escapeHtml(t.nationality)}</td>
       <td>${escapeHtml(t.level)}</td>
       <td>${escapeHtml(t.state)}</td>
@@ -997,7 +991,7 @@ function renderReview() {
     <div class="review-section">
       <h3>Teachers (${report.teachers.length})</h3>
       <div class="review-table-wrapper">
-        <table class="review-table"><thead><tr><th>Name</th><th>Email</th><th>M/F</th><th>Yr</th><th>DOB</th><th>Country</th><th>Nationality</th><th>Level</th><th>State</th><th>Salary</th><th>Tenure</th></tr></thead><tbody>${teacherRows}</tbody></table>
+        <table class="review-table"><thead><tr><th>Name</th><th>Email</th><th>M/F</th><th>Yr</th><th>Citizenship</th><th>Level</th><th>State</th><th>Salary</th><th>Tenure</th></tr></thead><tbody>${teacherRows}</tbody></table>
       </div>
     </div>
     ${report.relatives.length > 0 ? `
