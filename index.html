@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Teacher Roster - Cordell Hull Foundation</title>
   <link rel="icon" type="image/jpeg" href="./assets/logo.jpeg">
-  <link rel="stylesheet" href="styles.css?v=1.4.0">
+  <link rel="stylesheet" href="styles.css?v=1.5.0">
 </head>
 <body>
   <div class="app-container">
@@ -229,16 +229,9 @@
           <div class="form-group"><label for="relativeMiddleName">Middle Name</label><input type="text" id="relativeMiddleName" placeholder="Middle name (if any)"></div>
 
           <div class="form-row">
-            <div class="form-group"><label for="relativeBirthDate">Birth Date</label><input type="date" id="relativeBirthDate"></div>
-            <div class="form-group"><label for="relativeBirthCity">City of Birth</label><input type="text" id="relativeBirthCity" placeholder="e.g., Paris"></div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group"><label for="relativeBirthCountry">Country of Birth</label><input type="text" id="relativeBirthCountry" list="countryList" placeholder="e.g., France"></div>
+            <div class="form-group"><label for="relativeNationality">Country of Citizenship</label><input type="text" id="relativeNationality" list="countryList" placeholder="e.g., France"></div>
             <div class="form-group"><label for="relativeResidence">Country of Residence</label><input type="text" id="relativeResidence" list="countryList" placeholder="e.g., France"></div>
           </div>
-
-          <div class="form-group"><label for="relativeNationality">Nationality</label><input type="text" id="relativeNationality" placeholder="e.g., French"></div>
 
           <div class="form-actions">
             <button type="button" id="saveRelativeBtn" class="btn-primary">Save Relative</button>
@@ -326,6 +319,6 @@
     <div class="progress-modal"><span class="spinner large"></span><p id="generatingStatus">Generating PDF...</p></div>
   </div>
 
-  <script type="module" src="main.js?v=1.4.0"></script>
+  <script type="module" src="main.js?v=1.5.0"></script>
 </body>
 </html>

@@ -24,7 +24,6 @@ function _emptyRelative() {
   return {
     lastName: '', firstName: '', middleName: '',
     teacherIndex: -1, relationship: '',
-    birthDate: '', birthCity: '', birthCountry: '',
     countryOfResidence: '', nationality: ''
   };
 }
@@ -612,16 +611,13 @@ function _populateTeacherDropdown() {
 const RELATIVE_FIELDS = [
   'relativeLastName', 'relativeFirstName', 'relativeMiddleName',
   'relativeTeacher', 'relativeRelationship',
-  'relativeBirthDate', 'relativeBirthCity', 'relativeBirthCountry',
-  'relativeResidence', 'relativeNationality'
+  'relativeNationality', 'relativeResidence'
 ];
 
 const RELATIVE_STATE_MAP = {
   relativeLastName: 'lastName', relativeFirstName: 'firstName', relativeMiddleName: 'middleName',
   relativeTeacher: 'teacherIndex', relativeRelationship: 'relationship',
-  relativeBirthDate: 'birthDate', relativeBirthCity: 'birthCity',
-  relativeBirthCountry: 'birthCountry', relativeResidence: 'countryOfResidence',
-  relativeNationality: 'nationality'
+  relativeNationality: 'nationality', relativeResidence: 'countryOfResidence'
 };
 
 function openRelativeForm(index) {
@@ -987,9 +983,8 @@ function renderReview() {
       <td>${escapeHtml(r.lastName)}, ${escapeHtml(r.firstName)}${r.middleName ? ` ${escapeHtml(r.middleName)}` : ''}</td>
       <td>${escapeHtml(r.relationship)}</td>
       <td>${escapeHtml(_teacherNameForRelative(r))}</td>
-      <td>${escapeHtml(r.birthDate)}</td>
-      <td>${escapeHtml(r.birthCountry)}</td>
       <td>${escapeHtml(r.nationality)}</td>
+      <td>${escapeHtml(r.countryOfResidence)}</td>
     </tr>
   `).join('');
 
@@ -1011,7 +1006,7 @@ function renderReview() {
     <div class="review-section">
       <h3>Relatives (${report.relatives.length})</h3>
       <div class="review-table-wrapper">
-        <table class="review-table"><thead><tr><th>Name</th><th>Relationship</th><th>Teacher</th><th>DOB</th><th>Country</th><th>Nationality</th></tr></thead><tbody>${relativeRows}</tbody></table>
+        <table class="review-table"><thead><tr><th>Name</th><th>Relationship</th><th>Teacher</th><th>Citizenship</th><th>Residence</th></tr></thead><tbody>${relativeRows}</tbody></table>
       </div>
     </div>` : ''}
     <div class="review-section">
